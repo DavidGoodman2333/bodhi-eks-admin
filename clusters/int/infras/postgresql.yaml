@@ -1,0 +1,49 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bodhi-external-postgresql-public
+  namespace: postgresql 
+spec:
+  interval: 5m0s
+  timeout: 30s
+  chart:
+    spec:
+      chart: postgresql
+      version: 15.5.32
+      interval: 5m
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+  values:
+    auth:
+      username: bodhiint
+      password: bodhiint
+      database: app
+    primary:
+      service:
+        type: LoadBalancer  # 通过 LoadBalancer 将服务暴露到公网
+        port: 15232          # PostgreSQL 的默认端口
+      persistence:
+        existingClaim: bodhi-postgresql-pvc  # 引用下面定义的PVC
+      resources:
+        requests:
+          cpu: 100m
+          memory: 300Mi
+        limits:
+          cpu: 200m
+          memory: 600Mi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bodhi-postgresql-pvc  
+  namespace: postgresql
+spec:
+  accessModes:
+    - ReadWriteOnce  # 允许单个节点读写
+  resources:
+    requests:
+      storage: 4Gi  
+  storageClassName: standard  

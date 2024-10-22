@@ -24,7 +24,7 @@ spec:
         type: LoadBalancer 
         port: 15232          
       persistence:
-        existingClaim: bodhi-postgresql-pvc  
+        existingClaim: bodhi-postgresql-ebs-claim  
       resources:
         requests:
           cpu: 100m
@@ -45,11 +45,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: bodhi-postgresql-pvc  
+  name: bodhi-postgresql-ebs-claim
   namespace: postgresql
 spec:
   accessModes:
-    - ReadWriteOnce  # 允许单个节点读写
+    - ReadWriteOnce
+  storageClassName: gp2
   resources:
     requests:
-      storage: 4Gi  
+      storage: 4Gi

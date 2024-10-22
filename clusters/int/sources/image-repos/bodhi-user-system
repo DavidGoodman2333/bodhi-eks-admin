@@ -1,0 +1,25 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: bodhi-user-system
+  namespace: flux-system
+spec:
+  provider: aws
+  serviceAccountName: image-reflector-controller
+  image: 476114114107.dkr.ecr.ap-southeast-1.amazonaws.com/bodhi_user_system
+  interval: 1m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: bodhi-user-system-policy
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: bodhi-user-system
+    namespace: flux-system
+  filterTags:
+    pattern: '^[\d]*.[\d]*.[\d]*$'
+  policy:
+    semver:
+      range: ">=1.0.0"

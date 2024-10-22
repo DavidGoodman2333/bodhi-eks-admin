@@ -37,7 +37,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: node-group  
+                  - key: nodegroup  
                     operator: In
                     values:
                       - int       

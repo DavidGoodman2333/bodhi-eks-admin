@@ -6,7 +6,7 @@ metadata:
 spec:
   provider: aws
   serviceAccountName: image-reflector-controller
-  image: 476114114107.dkr.ecr.ap-southeast-1.amazonaws.com/Bodhi-UserSystem
+  image: 476114114107.dkr.ecr.ap-southeast-1.amazonaws.com/bodhi-user-system
   interval: 1m
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
